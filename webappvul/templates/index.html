@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vulnerability Scanner</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Web Vulnerability Scanner</h1>
+        
+        <div class="card mb-4">
+            <div class="card-header">New Scan</div>
+            <div class="card-body">
+                <form action="/scan" method="POST">
+                    <div class="form-group">
+                        <label for="target_url">Target URL</label>
+                        <input type="url" class="form-control" id="target_url" name="target_url" 
+                               placeholder="https://example.com" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Start Scan</button>
+                </form>
+            </div>
+        </div>
+
+        <h2>Recent Scans</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>URL</th>
+                    <th>Status</th>
+                    <th>Start Time</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for scan in scans %}
+                <tr>
+                    <td>{{ scan[0] }}</td>
+                    <td>{{ scan[1] }}</td>
+                    <td class="
+                        {% if scan[2] == 'Completed' %}text-success
+                        {% elif scan[2] == 'Running' %}text-info
+                        {% else %}text-danger{% endif %}
+                    ">{{ scan[2] }}</td>
+                    <td>{{ scan[3] }}</td>
+                    <td>
+                        <a href="/scan/{{ scan[0] }}" class="btn btn-sm btn-info">View Results</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

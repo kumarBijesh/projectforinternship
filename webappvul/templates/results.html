@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Scan Results</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Scan Results</h1>
+        <div class="card mb-4">
+            <div class="card-header">Scan Information</div>
+            <div class="card-body">
+                <p><strong>ID:</strong> {{ scan[0] }}</p>
+                <p><strong>Target URL:</strong> {{ scan[1] }}</p>
+                <p><strong>Status:</strong> 
+                    <span class="
+                        {% if scan[2] == 'Completed' %}text-success
+                        {% elif scan[2] == 'Running' %}text-info
+                        {% else %}text-danger{% endif %}
+                    ">{{ scan[2] }}</span>
+                </p>
+                <p><strong>Start Time:</strong> {{ scan[3] }}</p>
+                <p><strong>End Time:</strong> {{ scan[4] }}</p>
+            </div>
+        </div>
+
+        <h2>Vulnerability Findings</h2>
+        {% if findings %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Vulnerability</th>
+                    <th>Severity</th>
+                    <th>URL</th>
+                    <th>Payload</th>
+                    <th>Evidence</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for finding in findings %}
+                <tr>
+                    <td>{{ finding[2] }}</td>
+                    <td>
+                        <span class="badge 
+                            {% if finding[3] == 'High' %}badge-danger
+                            {% elif finding[3] == 'Medium' %}badge-warning
+                            {% else %}badge-info{% endif %}
+                        ">{{ finding[3] }}</span>
+                    </td>
+                    <td>{{ finding[4] }}</td>
+                    <td><code>{{ finding[5] }}</code></td>
+                    <td>{{ finding[6] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="alert alert-info">
+            No vulnerabilities found
+        </div>
+        {% endif %}
+        
+        <a href="/" class="btn btn-secondary">Back to Scanner</a>
+    </div>
+</body>
+</html>
